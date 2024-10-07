@@ -7,25 +7,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .container {
     background: rgba(255, 255, 255, 0.1);
-    padding: 30px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    width: 90%;
     max-width: 400px;
-    width: 100%;
     text-align: center;
+    margin: 20px auto;
 }
 
 h1 {
     margin-bottom: 20px;
-    font-size: 2em;
+    font-size: 1.8em;
     animation: fadeInDown 1s ease-out;
 }
 
@@ -40,10 +41,12 @@ input[type="time"], input[type="text"] {
     border: none;
     border-radius: 8px;
     font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 button {
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 8px;
     background-color: #2980b9;
@@ -51,15 +54,7 @@ button {
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #1c5980;
-}
-
-.reminders {
-    margin-top: 20px;
-    text-align: left;
+    width: 100%;
 }
 
 .reminder-item {
@@ -68,28 +63,24 @@ button:hover {
     border-radius: 8px;
     margin-bottom: 10px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     animation: fadeInUp 0.5s ease-out;
 }
 
-.reminder-item button {
-    background-color: #e74c3c;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-    transition: background-color 0.3s ease;
+.reminder-item span {
+    margin-bottom: 5px;
 }
 
-.reminder-item button:hover {
-    background-color: #c0392b;
+.reminder-item button {
+    align-self: flex-end;
+    padding: 5px 10px;
+    font-size: 0.9em;
 }
 
 .alert-box {
     position: fixed;
-    top: 20%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     background: rgba(0, 0, 0, 0.8);
@@ -97,29 +88,26 @@ button:hover {
     border-radius: 10px;
     z-index: 1000;
     animation: popUp 0.5s forwards;
+    width: 80%;
+    max-width: 300px;
 }
 
-.alert-box.hidden {
-    animation: fadeOut 0.5s forwards;
-}
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
 
-.alert-box h2 {
-    margin-top: 0;
-}
+    h1 {
+        font-size: 1.5em;
+    }
 
-.alert-box button {
-    margin-top: 15px;
-    background-color: #27ae60;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #fff;
-    transition: background-color 0.3s ease;
-}
+    input[type="time"], input[type="text"], button {
+        font-size: 0.9em;
+    }
 
-.alert-box button:hover {
-    background-color: #1e8449;
+    .alert-box {
+        width: 90%;
+    }
 }
 
 @keyframes fadeInDown {
