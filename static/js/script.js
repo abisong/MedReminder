@@ -58,6 +58,27 @@ function closeAlert() {
     alertBox.classList.remove('visible');
 }
 
+function sendSMS() {
+    window.open(`sms:+1234567890?body=Time to take your medication: ${alertMedName.textContent}`, '_blank');
+}
+
+function makeCall() {
+    window.open('tel:+1234567890', '_blank');
+}
+
 // Initialize
 displayReminders();
 setInterval(checkReminders, 60000); // Check every minute
+
+// Add touch event listeners for better mobile responsiveness
+alertBox.addEventListener('touchstart', function(e) {
+    if (e.target.tagName === 'BUTTON') {
+        e.target.style.backgroundColor = '#1c5980';
+    }
+});
+
+alertBox.addEventListener('touchend', function(e) {
+    if (e.target.tagName === 'BUTTON') {
+        e.target.style.backgroundColor = '#2980b9';
+    }
+});

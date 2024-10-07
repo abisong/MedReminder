@@ -29,8 +29,8 @@
     <div class="alert-box hidden" id="alertBox">
         <h2>Time to Take Your Medication!</h2>
         <p id="alertMedName">Medication Name</p>
-        <a href="sms:+1234567890?body=Time%20to%20take%20your%20medication." target="_blank"><button><i class="fas fa-sms"></i> Send SMS</button></a>
-        <a href="tel:+1234567890"><button><i class="fas fa-phone"></i> Call Now</button></a>
+        <button onclick="sendSMS()"><i class="fas fa-sms"></i> Send SMS</button>
+        <button onclick="makeCall()"><i class="fas fa-phone"></i> Call Now</button>
         <button onclick="closeAlert()"><i class="fas fa-times"></i> Dismiss</button>
     </div>
 
