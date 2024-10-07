@@ -54,8 +54,10 @@ function showAlert(medName) {
 }
 
 function closeAlert() {
-    alertBox.classList.add('hidden');
+    console.log('closeAlert function called');
     alertBox.classList.remove('visible');
+    alertBox.classList.add('hidden');
+    console.log('Alert box classes after close:', alertBox.classList);
 }
 
 function sendSMS() {
@@ -81,4 +83,10 @@ alertBox.addEventListener('touchend', function(e) {
     if (e.target.tagName === 'BUTTON') {
         e.target.style.backgroundColor = '#2980b9';
     }
+});
+
+// Add touchend event listener for the Dismiss button
+document.querySelector('#alertBox button:last-child').addEventListener('touchend', function(e) {
+    e.preventDefault();
+    closeAlert();
 });
