@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MedReminder App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p6EyZKAI6AWMo9D+VNW5rRy6fNkkV/voT+GPhKkFJ+XDLxT3Sp14z8P9rA1rL9ZZj1CwVzX5jHbZk+H2wKZv+g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input[type="time"], input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2980b9;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1c5980;
+        }
+
+        .reminders {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .reminder-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .reminder-item button {
+            background-color: #e74c3c;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .reminder-item button:hover {
+            background-color: #c0392b;
+        }
+
+        .alert-box {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            animation: popUp 0.5s forwards;
+        }
+
+        .alert-box.hidden {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .alert-box h2 {
+            margin-top: 0;
+        }
+
+        .alert-box button {
+            margin-top: 15px;
+            background-color: #27ae60;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .alert-box button:hover {
+            background-color: #1e8449;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popUp {
+            from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        }
+
+        /* SVG Background Animation */
+        .background-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .background-svg svg {
+            width: 100%;
+            height: 100%;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-svg">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.1" />
+                    <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.0" />
+                </linearGradient>
+            </defs>
+            <rect width="800" height="600" fill="url(#grad1)" />
+            <!-- Add more SVG elements as desired -->
+        </svg>
+    </div>
+    <div class="container">
+        <h1><i class="fas fa-pills"></i> MedReminder</h1>
+        <form id="reminderForm">
+            <input type="text" id="medName" placeholder="Medication Name" required>
+            <input type="time" id="medTime" required>
+            <button type="submit"><i class="fas fa-plus"></i> Add Reminder</button>
+        </form>
+        <div class="reminders" id="remindersList">
+            <!-- Reminders will appear here -->
+        </div>
+    </div>
+
+    <div class="alert-box hidden" id="alertBox">
+        <h2>Time to Take Your Medication!</h2>
+        <p id="alertMedName">Medication Name</p>
+        <a href="sms:+1234567890?body=Time%20to%20take%20your%20medication." target="_blank"><button><i class="fas fa-sms"></i> Send SMS</button></a>
+        <a href="tel:+1234567890"><button><i class="fas fa-phone"></i> Call Now</button></a>
+        <button onclick="closeAlert()"><i class="fas fa-times"></i> Dismiss</button>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" integrity="sha512-C7BNfKoniDRDRv3HvZjHsgg0W08dZoJzKwx2wKjJ0KiB5j9gwvYcvTMqp0IpEzB0uQfcA8QykylV2nWd6bLQkw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const reminderForm = document.getElementById('reminderForm');
+        const remindersList = document.getElementById('remindersList');
+        const alertBox = document.getElementById('alertBox');
+        const alertMedName = document.getElementById('alertMedName');
+
+        let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+
+        function displayReminders() {
+            remindersList.innerHTML = '';
+            reminders.forEach((reminder, index) => {
+                const div = document.createElement('div');
+                div.classList.add('reminder-item');
+                div.innerHTML = \`
+                    <span>\${reminder.name} at \${reminder.time}</span>
+                    <button onclick="deleteReminder(\${index})"><i class="fas fa-trash"></i></button>
+                \`;
+                remindersList.appendChild(div);
+            });
+        }
+
+        function deleteReminder(index) {
+            reminders.splice(index, 1);
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            displayReminders();
+        }
+
+        reminderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const medName = document.getElementById('medName').value.trim();
+            const medTime = document.getElementById('medTime').value;
+            if(medName && medTime){
+                reminders.push({ name: medName, time: medTime });
+                localStorage.setItem('reminders', JSON.stringify(reminders));
+                displayReminders();
+                reminderForm.reset();
+            }
+        });
+
+        function checkReminders() {
+            const now = moment().format('HH:mm');
+            reminders.forEach(reminder => {
+                if(reminder.time === now && !reminder.notified){
+                    showAlert(reminder.name);
+                    reminder.notified = true;
+                }
+            });
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+        }
+
+        function showAlert(medName) {
+            alertMedName.textContent = medName;
+            alertBox.classList.remove('hidden');
+            alertBox.classList.add('visible');
+            // Play notification sound or add more animations if desired
+        }
+
+        function closeAlert() {
+            alertBox.classList.add('hidden');
+            alertBox.classList.remove('visible');
+        }
+
+        // Initialize
+        displayReminders();
+        setInterval(checkReminders, 60000); // Check every minute
+    </script>
+</body>
+</html>
