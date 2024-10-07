@@ -49,8 +49,10 @@ function checkReminders() {
 
 function showAlert(medName) {
     alertMedName.textContent = medName;
+    alertBox.style.display = 'block';
     alertBox.classList.remove('hidden');
     alertBox.classList.add('visible');
+    addDismissListeners();
 }
 
 function closeAlert() {
@@ -58,6 +60,27 @@ function closeAlert() {
     alertBox.classList.remove('visible');
     alertBox.classList.add('hidden');
     console.log('Alert box classes after close:', alertBox.classList);
+    
+    // Remove the alert box from the DOM after a short delay
+    setTimeout(() => {
+        alertBox.style.display = 'none';
+    }, 500);
+}
+
+function addDismissListeners() {
+    const dismissButton = document.querySelector('#dismissButton');
+    dismissButton.removeEventListener('click', closeAlert);
+    dismissButton.removeEventListener('touchend', closeAlert);
+    
+    dismissButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeAlert();
+    });
+    
+    dismissButton.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        closeAlert();
+    });
 }
 
 function sendSMS() {
@@ -72,21 +95,5 @@ function makeCall() {
 displayReminders();
 setInterval(checkReminders, 60000); // Check every minute
 
-// Add touch event listeners for better mobile responsiveness
-alertBox.addEventListener('touchstart', function(e) {
-    if (e.target.tagName === 'BUTTON') {
-        e.target.style.backgroundColor = '#1c5980';
-    }
-});
-
-alertBox.addEventListener('touchend', function(e) {
-    if (e.target.tagName === 'BUTTON') {
-        e.target.style.backgroundColor = '#2980b9';
-    }
-});
-
-// Add touchend event listener for the Dismiss button
-document.querySelector('#alertBox button:last-child').addEventListener('touchend', function(e) {
-    e.preventDefault();
-    closeAlert();
-});
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', addDismissListeners);

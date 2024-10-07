@@ -108,6 +108,22 @@ button {
     width: 100%;
 }
 
+#dismissButton {
+    padding: 15px;
+    font-size: 1.1em;
+    margin-top: 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#dismissButton:hover, #dismissButton:active {
+    background-color: #c0392b;
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 15px;
