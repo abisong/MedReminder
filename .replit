@@ -43,6 +43,14 @@ args = "Configure Git and Remove Remote"
 task = "workflow.run"
 args = "Configure Git Remote"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Update and Push to GitHub"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Check GitHub Repository"
+
 [[workflows.workflow]]
 name = "Start Flask App"
 author = "agent"
@@ -158,6 +166,33 @@ args = """
     git remote add origin https://x-access-token:$GITHUB_TOKEN@github.com/abisong/MedReminder.git
     git remote -v
     """
+
+[[workflows.workflow]]
+name = "Update and Push to GitHub"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    git add main.py
+    git commit -m \"Update main.py to use environment variable for port\"
+    git push origin main
+    """
+
+[[workflows.workflow]]
+name = "Check GitHub Repository"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git remote get-url origin"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
