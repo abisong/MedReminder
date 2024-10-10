@@ -51,26 +51,18 @@ function checkReminders() {
 }
 
 function showAlert(medName) {
-    if (!initialLoad) {
-        alertMedName.textContent = medName;
-        alertBox.style.display = 'block';
-        alertBox.classList.remove('hidden');
-        alertBox.classList.add('visible');
-        addDismissListeners();
-    }
+    alertMedName.textContent = medName;
+    alertBox.classList.remove('hidden');
+    alertBox.classList.add('visible');
+    addDismissListener();
 }
 
 function closeAlert() {
     alertBox.classList.remove('visible');
     alertBox.classList.add('hidden');
-    
-    // Remove the alert box from the DOM after a short delay
-    setTimeout(() => {
-        alertBox.style.display = 'none';
-    }, 500);
 }
 
-function addDismissListeners() {
+function addDismissListener() {
     const dismissButton = document.querySelector('#dismissButton');
     dismissButton.removeEventListener('click', closeAlert);
     dismissButton.removeEventListener('touchend', closeAlert);
@@ -97,5 +89,9 @@ setTimeout(() => {
 
 // Call this function when the page loads
 document.addEventListener('DOMContentLoaded', function() {
-    addDismissListeners();
+    addDismissListener();
+    // Show alert box immediately for testing
+    setTimeout(() => {
+        showAlert("Test Medication");
+    }, 1000);
 });
