@@ -61,10 +61,8 @@ function showAlert(medName) {
 }
 
 function closeAlert() {
-    console.log('closeAlert function called');
     alertBox.classList.remove('visible');
     alertBox.classList.add('hidden');
-    console.log('Alert box classes after close:', alertBox.classList);
     
     // Remove the alert box from the DOM after a short delay
     setTimeout(() => {
