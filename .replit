@@ -15,6 +15,34 @@ author = "agent"
 task = "workflow.run"
 args = "Start Flask App"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Create GitHub Repo"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Push to GitHub"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Get GitHub Username"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Configure Git"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Check Git Status"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Configure Git and Remove Remote"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Configure Git Remote"
+
 [[workflows.workflow]]
 name = "Start Flask App"
 author = "agent"
@@ -26,6 +54,110 @@ agentRequireRestartOnSave = false
 task = "shell.exec"
 args = "python main.py"
 waitForPort = 5001
+
+[[workflows.workflow]]
+name = "Create GitHub Repo"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    curl -X POST -H \"Authorization: token $GITHUB_TOKEN\"          -H \"Accept: application/vnd.github.v3+json\"          https://api.github.com/user/repos          -d '{\"name\":\"MedReminder\",\"description\":\"A web-based MedReminder app using HTML, CSS, and Vanilla JavaScript with local storage and Flask for deployment\",\"private\":false}'
+    """
+
+[[workflows.workflow]]
+name = "Push to GitHub"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    git init
+    git add .
+    git commit -m \"Initial commit of MedReminder app\"
+    git branch -M main
+    git remote add origin https://x-access-token:$GITHUB_TOKEN@github.com/$(curl -s -H \"Authorization: token $GITHUB_TOKEN\" https://api.github.com/user | jq -r .login)/MedReminder.git
+    git push -u origin main
+    """
+
+[[workflows.workflow]]
+name = "Get GitHub Username"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "curl -s -H \"Authorization: token $GITHUB_TOKEN\" https://api.github.com/user | grep login"
+
+[[workflows.workflow]]
+name = "Configure Git"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    git config --global user.email \"github-actions[bot]@users.noreply.github.com\"
+    git config --global user.name \"GitHub Actions Bot\"
+    git config --list
+    """
+
+[[workflows.workflow]]
+name = "Check Git Status"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git status"
+
+[[workflows.workflow]]
+name = "Configure Git and Remove Remote"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    git config --global user.email \"github-actions[bot]@users.noreply.github.com\"
+    git config --global user.name \"GitHub Actions Bot\"
+    git remote remove origin
+    git remote -v
+    """
+
+[[workflows.workflow]]
+name = "Configure Git Remote"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = """
+
+    git remote remove origin
+    git remote add origin https://x-access-token:$GITHUB_TOKEN@github.com/abisong/MedReminder.git
+    git remote -v
+    """
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
