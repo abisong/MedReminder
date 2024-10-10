@@ -4,6 +4,7 @@ const alertBox = document.getElementById('alertBox');
 const alertMedName = document.getElementById('alertMedName');
 
 let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+let initialLoad = true;
 
 function displayReminders() {
     remindersList.innerHTML = '';
@@ -39,12 +40,13 @@ reminderForm.addEventListener('submit', function(e) {
 function checkReminders() {
     const now = moment().format('HH:mm');
     reminders.forEach(reminder => {
-        if(reminder.time === now && !reminder.notified){
+        if (reminder.time === now && !reminder.notified && !initialLoad) {
             showAlert(reminder.name);
             reminder.notified = true;
         }
     });
     localStorage.setItem('reminders', JSON.stringify(reminders));
+    initialLoad = false;
 }
 
 function showAlert(medName) {
@@ -96,6 +98,7 @@ displayReminders();
 
 // Add a delay before starting the reminder checks
 setTimeout(() => {
+    initialLoad = false;
     setInterval(checkReminders, 60000); // Check every minute
 }, 2000); // 2-second delay
 
