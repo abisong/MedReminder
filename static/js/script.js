@@ -40,21 +40,24 @@ reminderForm.addEventListener('submit', function(e) {
 function checkReminders() {
     const now = moment().format('HH:mm');
     reminders.forEach(reminder => {
-        if (reminder.time === now && !reminder.notified && !initialLoad) {
-            showAlert(reminder.name);
+        if (reminder.time === now && !reminder.notified) {
+            if (!initialLoad) {
+                showAlert(reminder.name);
+            }
             reminder.notified = true;
         }
     });
     localStorage.setItem('reminders', JSON.stringify(reminders));
-    initialLoad = false;
 }
 
 function showAlert(medName) {
-    alertMedName.textContent = medName;
-    alertBox.style.display = 'block';
-    alertBox.classList.remove('hidden');
-    alertBox.classList.add('visible');
-    addDismissListeners();
+    if (!initialLoad) {
+        alertMedName.textContent = medName;
+        alertBox.style.display = 'block';
+        alertBox.classList.remove('hidden');
+        alertBox.classList.add('visible');
+        addDismissListeners();
+    }
 }
 
 function closeAlert() {
@@ -95,6 +98,9 @@ function makeCall() {
 
 // Initialize
 displayReminders();
+
+// Set initialLoad to true
+let initialLoad = true;
 
 // Add a delay before starting the reminder checks
 setTimeout(() => {
