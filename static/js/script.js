@@ -37,12 +37,6 @@ reminderForm.addEventListener('submit', function(e) {
 });
 
 function checkReminders() {
-    // Check if it's the initial load
-    if (sessionStorage.getItem('initialLoadComplete') !== 'true') {
-        sessionStorage.setItem('initialLoadComplete', 'true');
-        return; // Don't check reminders on initial load
-    }
-
     const now = moment().format('HH:mm');
     reminders.forEach(reminder => {
         if(reminder.time === now && !reminder.notified){
@@ -100,9 +94,8 @@ function makeCall() {
 // Initialize
 displayReminders();
 
-// Add a small delay before starting the reminder checks
+// Add a delay before starting the reminder checks
 setTimeout(() => {
-    sessionStorage.setItem('initialLoadComplete', 'true');
     setInterval(checkReminders, 60000); // Check every minute
 }, 2000); // 2-second delay
 
